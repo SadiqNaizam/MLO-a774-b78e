@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
-	darkMode: ["class"],
+	darkMode: ["class"], // Kept from existing; standard for Shadcn
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -10,7 +11,7 @@ export default {
 	],
 	prefix: "",
 	theme: {
-		container: {
+		container: { // Kept from existing as PRD doesn't specify override
 			center: true,
 			padding: '2rem',
 			screens: {
@@ -36,6 +37,10 @@ export default {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
+                                success: { // Added from PRD colorPalette
+                                        DEFAULT: 'hsl(var(--success))',
+                                        foreground: 'hsl(var(--success-foreground))'
+                                },
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
@@ -52,23 +57,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				sidebar: { // Updated based on PRD (simpler structure)
+					DEFAULT: 'hsl(var(--sidebar))',
+					foreground: 'hsl(var(--sidebar-foreground-val))'
 				}
 			},
-			borderRadius: {
+			borderRadius: { // Kept from existing, uses --radius which is now updated
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			keyframes: {
+			fontFamily: { // Added based on PRD typography.primaryFont
+        sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],
+      },
+			keyframes: { // Kept from existing as PRD doesn't specify override
 				'accordion-down': {
 					from: {
 						height: '0'
@@ -86,11 +88,14 @@ export default {
 					}
 				}
 			},
-			animation: {
+			animation: { // Kept from existing as PRD doesn't specify override
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography") // Added based on dependencies & common Shadcn usage
+  ],
 } satisfies Config;
